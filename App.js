@@ -1,36 +1,39 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import {useState,useEffect} from 'react';
-import axios from 'axios';
 
 export default function App() {
 
-  const [ip, setIP] = useState('');
-
   /*------------------------------------------
   --------------------------------------------
-  Getting IP using API
+  Users Lists
   --------------------------------------------
   --------------------------------------------*/
-  const getData = async () => {
-    const res = await axios.get('https://geolocation-db.com/json/')
-    setIP(res.data.IPv4)
-  }
-  
-  /*------------------------------------------
-  --------------------------------------------
-  Call getData() function
-  --------------------------------------------
-  --------------------------------------------*/
-  useEffect( () => {
-    getData()
-
-  }, [])
+  const users = [
+    {id: 1, name: 'Hardik', country: 'India'},
+    {id: 2, name: 'Vimal', country: 'India'},
+    {id: 3, name: 'Harshad', country: 'Canada'},
+    {id: 4, name: 'Keval', country: 'Denmark'},
+    {id: 5, name: 'Savan', country: 'USA'},
+  ];
 
   return (
     <View style={styles.container}>
-      <Text>Your IP Address is {ip}</Text>
-      <StatusBar style="auto" />
+      {users
+        .filter(user => {
+          return (
+            user.country === 'India' || user.country === 'USA'
+          );
+        })
+        .map((user, index) => {
+          return (
+            <div key={index}>
+              <h2>Name: {user.name}</h2>
+              <h2>Country: {user.country}</h2>
+              <hr />
+            </div>
+          );
+        })}
     </View>
   );
 }
